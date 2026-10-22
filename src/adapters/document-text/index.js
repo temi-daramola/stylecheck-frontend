@@ -10,6 +10,8 @@ const UNREADABLE_PDF = 'This PDF could not be read. Please check the file and tr
 const UNREADABLE_DOCX = 'This document could not be read. Please check the file and try again.';
 const PASSWORD_PROTECTED_PDF = 'This PDF is password protected. Remove the password and try again.';
 const PASSWORD_EXCEPTION = 'PasswordException';
+const LINE_BREAK = '\n';
+const PAGE_BREAK = '\n\n';
 
 const extractPdfText = async (file) => {
   const data = new Uint8Array(await file.arrayBuffer());
@@ -21,12 +23,9 @@ const extractPdfText = async (file) => {
     for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
       const page = await pdf.getPage(pageNumber);
       const content = await page.getTextContent();
-      pages.push(content.items.map((item) => ('str' in item ? item.str + (item.hasEOL ? '
-' : ' ') : '')).join(''));
+      pages.push(content.items.map((item) => ('str' in item ? item.str + (item.hasEOL ? LINE_BREAK : ' ') : '')).join(''));
     }
-    return pages.join('
-
-');
+    return pages.join(PAGE_BREAK);
   } finally {
     await loadingTask.destroy();
   }
