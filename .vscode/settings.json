@@ -1,0 +1,14 @@
+{
+  "javascript.preferences.autoImportFileExcludePatterns": [
+    "**/modules/*/pages/**",
+    "**/modules/*/controllers/**",
+    "**/modules/*/components/**",
+    "**/modules/*/store/**"
+  ],
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "**/modules/*/pages/**",
+    "**/modules/*/controllers/**",
+    "**/modules/*/components/**",
+    "**/modules/*/store/**"
+  ]
+}
