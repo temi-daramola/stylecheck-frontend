@@ -23,7 +23,7 @@ The backend must be running and allow this origin (`FRONTEND_URL` on the backend
 - `npm run lint`: ESLint, including the import-boundary rules
 
 ## Screens
-`/login`, `/forgot-password`, `/reset-password`, `/dashboard`, `/results/:checkId`, `/share/:checkId`, `/settings`.
+`/login`, `/forgot-password`, `/reset-password`, `/dashboard`, `/results/:checkId`, `/share/:checkId`, `/settings`, and `/admin` (admins only: add supervisors, resend invites, deactivate or reactivate accounts).
 
 The style manual is read in the browser (pdf.js for PDF, mammoth for DOCX) and only its text is sent to the backend. A scanned PDF has no text layer and is rejected with a message before anything is sent.
 

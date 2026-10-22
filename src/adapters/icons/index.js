@@ -30,6 +30,11 @@ import {
   LuInbox,
   LuCircleAlert,
   LuKeyRound,
+  LuUsers,
+  LuUserPlus,
+  LuUserX,
+  LuUserCheck,
+  LuMailPlus,
 } from 'react-icons/lu';
 
 export const BrandIcon = LuShieldCheck;
@@ -62,3 +67,8 @@ export const InfoIcon = LuInfo;
 export const EmptyIcon = LuInbox;
 export const ErrorIcon = LuCircleAlert;
 export const KeyIcon = LuKeyRound;
+export const UsersIcon = LuUsers;
+export const AddUserIcon = LuUserPlus;
+export const DeactivateUserIcon = LuUserX;
+export const ActivateUserIcon = LuUserCheck;
+export const InviteIcon = LuMailPlus;

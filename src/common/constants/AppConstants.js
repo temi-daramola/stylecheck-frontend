@@ -5,6 +5,7 @@ export const ROUTES = Object.freeze({
   RESET_PASSWORD: '/reset-password',
   DASHBOARD: '/dashboard',
   SETTINGS: '/settings',
+  ADMIN: '/admin',
   results: (checkId) => `/results/${checkId}`,
   share: (checkId) => `/share/${checkId}`,
   RESULTS_PATTERN: '/results/:checkId',
@@ -15,6 +16,7 @@ export const QUERY_KEYS = Object.freeze({
   MANUAL: ['style-manual'],
   PROFILE: ['supervisor-profile'],
   CHECKS: ['checks'],
+  ADMIN_SUPERVISORS: ['admin', 'supervisors'],
   check: (checkId) => ['checks', checkId],
 });
 
@@ -23,6 +25,9 @@ export const API_PATHS = Object.freeze({
   REFRESH: '/auth/refresh',
   LOGOUT: '/auth/logout',
   FORGOT_PASSWORD: '/auth/forgot-password',
+  ADMIN_SUPERVISORS: '/admin/supervisors',
+  adminInvite: (id) => `/admin/supervisors/${id}/invite`,
+  adminActive: (id) => `/admin/supervisors/${id}/active`,
   RESET_PASSWORD: '/auth/reset-password',
   PROFILE: '/supervisors/me',
   PREFERENCES: '/supervisors/me/preferences',

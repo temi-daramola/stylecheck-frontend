@@ -35,5 +35,6 @@ export const useResetPasswordForm = () => {
     },
   });
 
-  return { ...form, hasToken: Boolean(token) };
+  // Links emailed by an admin's invitation carry invite=1, so the page can welcome a new supervisor.
+  return { ...form, hasToken: Boolean(token), isInvite: get('invite') === '1' };
 };

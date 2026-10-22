@@ -13,6 +13,7 @@ export { Skeleton, SkeletonCircle, FormSkeleton, ListSkeleton, CardSkeleton } fr
 export { Avatar } from './Avatar.jsx';
 export { ProgressBar } from './ProgressBar.jsx';
 export { Card } from './Card.jsx';
+export { Dialog, ConfirmDialog } from './Dialog.jsx';
 export { ErrorBoundary } from './ErrorBoundary.jsx';
 export { DataGate } from './DataGate.jsx';
 export { BlurOverlay, ContentBlockerOverlay, PageLoadingIndicator } from './Overlays.jsx';

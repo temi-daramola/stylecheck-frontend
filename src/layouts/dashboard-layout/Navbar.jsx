@@ -1,6 +1,6 @@
 import { Flex, Box, Text, Link, IconButton, Avatar, HStack } from '@/common/components';
 import { COLORS, ROUTES } from '@/common/constants';
-import { BrandIcon, SettingsIcon, LogOutIcon, ArrowLeftIcon } from '@/adapters/icons';
+import { BrandIcon, SettingsIcon, LogOutIcon, ArrowLeftIcon, UsersIcon } from '@/adapters/icons';
 import { useNavigation, useRouteLocation } from '@/adapters/router';
 import { useAuth } from '@/application';
 
@@ -12,6 +12,8 @@ export const Navbar = () => {
   const { path } = useRouteLocation();
   const isDashboard = path === ROUTES.DASHBOARD;
   const isSettings = path === ROUTES.SETTINGS;
+  const isAdminPage = path === ROUTES.ADMIN;
+  const isAdmin = user?.role === 'admin';
 
   const handleLogout = async () => {
     await logout();
@@ -47,6 +49,9 @@ export const Navbar = () => {
       </HStack>
 
       <HStack gap="3">
+        {isAdmin && !isAdminPage && (
+          <IconButton label="Admin" icon={<UsersIcon size={20} />} onClick={() => goTo(ROUTES.ADMIN)} color={COLORS.secondary.subtle} _hover={{ bg: COLORS.navy.base, color: COLORS.stage.base }} />
+        )}
         {!isSettings && (
           <IconButton label="Settings" icon={<SettingsIcon size={20} />} onClick={() => goTo(ROUTES.SETTINGS)} color={COLORS.secondary.subtle} _hover={{ bg: COLORS.navy.base, color: COLORS.stage.base }} />
         )}

@@ -7,16 +7,20 @@ import { useResetPasswordPageController } from '@/modules/auth/controllers/reset
 import { AuthConstants } from '@/modules/auth/constants/AuthConstants.js';
 
 export const ResetPasswordPage = () => {
-  const { values, errors, formError, isSubmitting, handleChange, handleSubmit, hasToken, isVisible, toggleVisibility } =
+  const { values, errors, formError, isSubmitting, handleChange, handleSubmit, hasToken, isInvite, isVisible, toggleVisibility } =
     useResetPasswordPageController();
 
   return (
     <AuthSplitLayout>
       <Box mb="8">
         <Heading as="h2" fontSize="28px" fontWeight="800" letterSpacing="-0.02em" color={COLORS.body.heading} mb="2">
-          Choose a new password
+          {isInvite ? 'Set your password' : 'Choose a new password'}
         </Heading>
-        <Text color={COLORS.body.muted}>Use at least 8 characters. You will be signed out everywhere else.</Text>
+        <Text color={COLORS.body.muted}>
+          {isInvite
+            ? 'Welcome to StyleCheck. Choose a password to finish setting up your account (at least 8 characters).'
+            : 'Use at least 8 characters. You will be signed out everywhere else.'}
+        </Text>
       </Box>
 
       {!hasToken ? (
@@ -49,7 +53,7 @@ export const ResetPasswordPage = () => {
               error={errors.confirmPassword}
             />
             <Button type="submit" tone="primary" size="lg" width="100%" loading={isSubmitting} loadingText="Saving...">
-              Reset password
+              {isInvite ? 'Set password' : 'Reset password'}
             </Button>
           </Stack>
         </form>
