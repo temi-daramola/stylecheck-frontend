@@ -1,12 +1,15 @@
 // In-browser text extraction for style manuals. The file itself never leaves the browser.
-import * as pdfjs from 'pdfjs-dist';
-import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
+// The legacy build runs on older browsers too; the standard build needs very recent ones.
+import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
+import pdfWorkerUrl from 'pdfjs-dist/legacy/build/pdf.worker.min.mjs?url';
 import mammoth from 'mammoth/mammoth.browser';
 
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
 
 const UNREADABLE_PDF = 'This PDF could not be read. Please check the file and try again.';
 const UNREADABLE_DOCX = 'This document could not be read. Please check the file and try again.';
+const PASSWORD_PROTECTED_PDF = 'This PDF is password protected. Remove the password and try again.';
+const PASSWORD_EXCEPTION = 'PasswordException';
 
 const extractPdfText = async (file) => {
   const data = new Uint8Array(await file.arrayBuffer());
@@ -33,7 +36,11 @@ const extractDocxText = async (file) => {
 export const extractDocumentText = async (file, fileType) => {
   try {
     return fileType === 'pdf' ? await extractPdfText(file) : await extractDocxText(file);
-  } catch {
-    throw { status: 'error', message: fileType === 'pdf' ? UNREADABLE_PDF : UNREADABLE_DOCX, data: null };
+  } catch (error) {
+    // Keep the real cause visible for debugging: the user-facing message below is deliberately short.
+    console.error('[document-text] extraction failed:', error);
+    const message =
+      error?.name === PASSWORD_EXCEPTION ? PASSWORD_PROTECTED_PDF : fileType === 'pdf' ? UNREADABLE_PDF : UNREADABLE_DOCX;
+    throw { status: 'error', message, data: null };
   }
 };
