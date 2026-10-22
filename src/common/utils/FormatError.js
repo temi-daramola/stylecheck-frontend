@@ -1,6 +1,6 @@
 const REFERENCE_LENGTH = 8;
 // Failures the user cannot fix themselves: worth a reference code so support can find the backend log line.
-const SERVER_SIDE_CODES = ['EXTERNAL_SERVICE_ERROR', 'INTERNAL_ERROR', 'DB_OPERATION_FAILED'];
+const SERVER_SIDE_CODES = ['EXTERNAL_SERVICE_ERROR', 'INTERNAL_ERROR', 'DB_OPERATION_FAILED', 'FORMATTING_ANALYSIS_FAILED', 'FORMATTING_SETUP_FAILED'];
 
 /** The backend's message, plus a short reference (the request id) for server-side failures. */
 export const formatErrorMessage = (error, fallback) => {
