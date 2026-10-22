@@ -13,15 +13,23 @@ const PASSWORD_EXCEPTION = 'PasswordException';
 
 const extractPdfText = async (file) => {
   const data = new Uint8Array(await file.arrayBuffer());
-  const pdf = await pdfjs.getDocument({ data }).promise;
-  const pages = [];
-  for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
-    const page = await pdf.getPage(pageNumber);
-    const content = await page.getTextContent();
-    pages.push(content.items.map((item) => ('str' in item ? item.str + (item.hasEOL ? '\n' : ' ') : '')).join(''));
+  // The loading task owns the worker resources, so it is the thing to destroy (not the document).
+  const loadingTask = pdfjs.getDocument({ data });
+  try {
+    const pdf = await loadingTask.promise;
+    const pages = [];
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const content = await page.getTextContent();
+      pages.push(content.items.map((item) => ('str' in item ? item.str + (item.hasEOL ? '
+' : ' ') : '')).join(''));
+    }
+    return pages.join('
+
+');
+  } finally {
+    await loadingTask.destroy();
   }
-  await pdf.destroy();
-  return pages.join('\n\n');
 };
 
 const extractDocxText = async (file) => {
