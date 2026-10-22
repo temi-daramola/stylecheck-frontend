@@ -8,6 +8,8 @@ export const fetchCheck = (checkId) => get(API_PATHS.check(checkId));
 export const createCheck = ({ formData, onProgress, signal }) =>
   uploadForm(API_PATHS.CHECKS, formData, { onProgress, signal });
 
+/** Re-runs the AI step on a saved check whose earlier attempt failed. */
+export const retryCheck = (checkId) => post(API_PATHS.checkRetry(checkId));
 export const downloadCheckReport = (checkId) => downloadFile(API_PATHS.checkPdf(checkId));
 export const shareCheck = ({ checkId, studentEmail, message }) =>
   post(API_PATHS.checkShare(checkId), { studentEmail, message });

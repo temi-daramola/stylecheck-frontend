@@ -33,10 +33,12 @@ export const API_PATHS = Object.freeze({
   PREFERENCES: '/supervisors/me/preferences',
   MANUAL_ME: '/manuals/me',
   MANUALS: '/manuals',
+  MANUAL_PROCESS: '/manuals/process',
   CHECKS: '/checks',
   check: (checkId) => `/checks/${checkId}`,
   checkPdf: (checkId) => `/checks/${checkId}/pdf`,
   checkShare: (checkId) => `/checks/${checkId}/share`,
+  checkRetry: (checkId) => `/checks/${checkId}/retry`,
 });
 
 export const FILE_LIMITS = Object.freeze({

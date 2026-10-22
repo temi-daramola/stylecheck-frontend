@@ -7,6 +7,7 @@ import {
   useShowScorePreference,
   useStudentDocument,
   useCheckUpload,
+  usePendingCheck,
   useCheckForm,
 } from '@/modules/checks/hooks';
 import { getGreeting } from '@/modules/checks/utils/ScoreStyles.js';
@@ -21,12 +22,14 @@ export const useDashboardPageController = () => {
   const showScore = useShowScorePreference();
   const document = useStudentDocument();
   const upload = useCheckUpload();
-  const form = useCheckForm({ file: document.file, upload, onFailure: document.clear });
+  const pendingCheck = usePendingCheck();
+  const form = useCheckForm({ file: document.file, upload, onFailure: document.clear, onPending: pendingCheck.keep });
 
-  // The only handler that combines two concerns (file presence + form validation), so it lives here.
+  // The only handler that combines concerns (file presence + form validation + a stale pending notice).
   const handleSubmit = (event) => {
     event?.preventDefault?.();
     if (!document.requireFile()) return;
+    pendingCheck.dismiss(); // a new attempt replaces any earlier "try again" notice
     return form.handleSubmit(event);
   };
 
@@ -38,6 +41,7 @@ export const useDashboardPageController = () => {
     form: { ...form, handleSubmit },
     document,
     upload,
+    pendingCheck,
     recent,
     showScore,
     goToSettings: () => goTo(ROUTES.SETTINGS),

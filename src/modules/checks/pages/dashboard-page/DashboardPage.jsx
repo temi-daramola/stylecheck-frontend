@@ -2,12 +2,13 @@ import { Stack, Box, Heading, Text, Button, Card, InlineAlert, DataGate } from '
 import { COLORS } from '@/common/constants';
 import { CheckUploadCard } from '@/modules/checks/components/CheckUploadCard.jsx';
 import { LockedSection } from '@/modules/checks/components/LockedSection.jsx';
+import { PendingCheckNotice } from '@/modules/checks/components/PendingCheckNotice.jsx';
 import { RecentChecksList } from '@/modules/checks/components/RecentChecksList.jsx';
 import { useDashboardPageController } from '@/modules/checks/controllers/dashboard-page/useDashboardPageController.js';
 import { ChecksConstants } from '@/modules/checks/constants/ChecksConstants.js';
 
 export const DashboardPage = () => {
-  const { userName, greeting, gate, lockPresentation, form, document, upload, recent, showScore, goToSettings } =
+  const { userName, greeting, gate, lockPresentation, form, document, upload, pendingCheck, recent, showScore, goToSettings } =
     useDashboardPageController();
   const isLocked = gate.lock !== ChecksConstants.LOCK.NONE;
 
@@ -25,6 +26,15 @@ export const DashboardPage = () => {
             title={lockPresentation.bannerTitle}
             description={lockPresentation.bannerText}
             action={<Button tone="warning" onClick={goToSettings}>{lockPresentation.buttonLabel}</Button>}
+          />
+        )}
+
+        {pendingCheck.pending && !isLocked && (
+          <PendingCheckNotice
+            pending={pendingCheck.pending}
+            isRetrying={pendingCheck.isRetrying}
+            onRetry={pendingCheck.retry}
+            onDismiss={pendingCheck.dismiss}
           />
         )}
 

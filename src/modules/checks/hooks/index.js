@@ -3,6 +3,7 @@ export { useRecentChecks } from './useRecentChecks.js';
 export { useShowScorePreference } from './useShowScorePreference.js';
 export { useStudentDocument } from './useStudentDocument.js';
 export { useCheckUpload } from './useCheckUpload.js';
+export { usePendingCheck } from './usePendingCheck.js';
 export { useCheckForm } from './useCheckForm.js';
 export { useCheckDetail } from './useCheckDetail.js';
 export { useDownloadReport } from './useDownloadReport.js';

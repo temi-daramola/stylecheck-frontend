@@ -9,13 +9,14 @@ const DEFAULT_ERROR = 'Something went wrong. Please try again.';
  * The backend's own message always wins; `successMessage`/`errorMessage` are only fallbacks.
  * `silentSuccess` skips the success toast for flows that give their own feedback.
  */
-export const useMutationWithFeedback = ({ mutationFn, onSuccessCache, successMessage, errorMessage, silentSuccess = false, silentError = false }) =>
+export const useMutationWithFeedback = ({ mutationFn, onSuccessCache, onErrorCache, successMessage, errorMessage, silentSuccess = false, silentError = false }) =>
   useSubmit(mutationFn, {
     onSuccess: (response, variables) => {
       onSuccessCache?.(response, variables);
       if (!silentSuccess) notifySuccess(response?.message || successMessage || DEFAULT_SUCCESS);
     },
-    onError: (error) => {
+    onError: (error, variables) => {
+      onErrorCache?.(error, variables);
       if (error?.code === 'REQUEST_CANCELLED' || silentError) return;
       notifyError(error?.message || errorMessage || DEFAULT_ERROR);
     },

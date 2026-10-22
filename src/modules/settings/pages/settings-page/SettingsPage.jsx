@@ -1,5 +1,6 @@
 import { Stack, Box, Heading, Text, Button, Card, Flex, Switch, InlineAlert, DataGate, FileDropZone, ContentBlockerOverlay, PageLoadingIndicator } from '@/common/components';
 import { COLORS, FILE_LIMITS } from '@/common/constants';
+import { MANUAL_STATE } from '@/common/utils';
 import { UploadIcon, RefreshIcon } from '@/adapters/icons';
 import { ManualFileCard } from '@/modules/settings/components/ManualFileCard.jsx';
 import { useSettingsPageController } from '@/modules/settings/controllers/settings-page/useSettingsPageController.js';
@@ -14,11 +15,12 @@ const SectionHeader = ({ title, description }) => (
 
 export const SettingsPage = () => {
   const {
-    manual, manualState, file, isExtracting, selectionError, canSubmit, isUploading, uploadError, justUploaded,
-    selectFile, clearFile, submit, rulesList, preferences,
+    manual, manualState, manualQuery, file, isExtracting, selectionError, canSubmit, isUploading, isProcessing,
+    uploadError, processError, banner, selectFile, clearFile, submit, processSaved, rulesList, preferences,
   } = useSettingsPageController();
 
-  const hasManual = Boolean(manual);
+  const hasManual = manualState !== MANUAL_STATE.NONE;
+  const isBusy = isUploading || isProcessing;
 
   return (
     <Stack gap="8" maxW="860px" mx="auto">
@@ -30,10 +32,20 @@ export const SettingsPage = () => {
       <Card>
         <SectionHeader title="Style Manual" description="The style manual is used as the reference for all compliance checks." />
         <Box p="6">
-          <DataGate {...manualState} errorTitle="Couldn't load your style manual" onRetry={manualState.retry} skeletonType="card">
-            <ContentBlockerOverlay isActive={isUploading}>
+          <DataGate {...manualQuery} errorTitle="Couldn't load your style manual" onRetry={manualQuery.retry} skeletonType="card">
+            <ContentBlockerOverlay isActive={isBusy}>
               <Stack gap="5">
-                {hasManual && <ManualFileCard manual={manual} isRulesOpen={rulesList.isOpen} onToggleRules={rulesList.toggle} />}
+                {hasManual && (
+                  <ManualFileCard
+                    manual={manual}
+                    state={manualState}
+                    isRulesOpen={rulesList.isOpen}
+                    onToggleRules={rulesList.toggle}
+                    onProcess={processSaved}
+                    isProcessing={isProcessing}
+                    processError={processError}
+                  />
+                )}
 
                 <Box>
                   <Text fontSize="12px" fontWeight="700" letterSpacing="0.06em" textTransform="uppercase" color={COLORS.body.heading} mb="3">
@@ -45,23 +57,23 @@ export const SettingsPage = () => {
                     onClear={clearFile}
                     accept=".pdf,.docx"
                     title={hasManual ? 'Drag & drop a new file' : 'Drag & drop your style manual'}
-                    helper={`or`}
+                    helper="or"
                     badge={`PDF or DOCX · Max ${FILE_LIMITS.MANUAL_MAX_MB}MB`}
-                    disabled={isUploading || isExtracting}
+                    disabled={isBusy || isExtracting}
                     compact
                   />
                   <Text mt="2" fontSize="13px" color={COLORS.body.muted}>
-                    The text is read in your browser. The file itself is not uploaded or stored.
+                    The text is read in your browser. The file itself is never uploaded; only its text is saved.
                   </Text>
                 </Box>
 
                 {isExtracting && <InlineAlert status="info" description="Reading the file..." />}
                 {selectionError && <InlineAlert status="error" description={selectionError} />}
-                {uploadError && <InlineAlert status="error" title="Upload failed" description={uploadError} />}
-                {justUploaded && <InlineAlert status="success" description={SettingsConstants.MESSAGES.UPLOAD_SUCCESS_BANNER} />}
+                {uploadError && <InlineAlert status="error" title="Upload problem" description={uploadError} />}
+                {banner && <InlineAlert status="success" description={banner} />}
 
                 <Box>
-                  <Button tone="primary" size="lg" disabled={!canSubmit} loading={isUploading} loadingText="Analysing style manual..." onClick={submit}>
+                  <Button tone="primary" size="lg" disabled={!canSubmit} loading={isUploading} loadingText="Saving and analysing..." onClick={submit}>
                     {hasManual ? <RefreshIcon size={18} /> : <UploadIcon size={18} />}
                     {hasManual ? 'Replace Style Manual' : 'Upload Style Manual'}
                   </Button>
@@ -91,7 +103,7 @@ export const SettingsPage = () => {
         </DataGate>
       </Card>
 
-      <PageLoadingIndicator isLoading={isUploading} message="Extracting rules from your style manual..." />
+      <PageLoadingIndicator isLoading={isBusy} message="Extracting style rules, this can take a little while..." />
     </Stack>
   );
 };
