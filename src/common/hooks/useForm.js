@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { validate } from '@/adapters/validation';
+import { formatErrorMessage } from '@/common/utils';
 
 const FIX_ERRORS_MESSAGE = 'Please fix the errors below';
 const GENERIC_ERROR_MESSAGE = 'Something went wrong. Please try again.';
@@ -50,7 +51,7 @@ export const useForm = ({ initialValues, schema, onSubmit, resetOnSuccess = fals
     } catch (error) {
       // Already shaped as { status, message, data, code, requestId } by the http adapter.
       setErrors(error?.data && !Array.isArray(error.data) ? error.data : fieldErrorsFromList(error?.data));
-      setFormError(error?.message ?? GENERIC_ERROR_MESSAGE);
+      setFormError(formatErrorMessage(error, GENERIC_ERROR_MESSAGE));
     } finally {
       setIsSubmitting(false);
     }

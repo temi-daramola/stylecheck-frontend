@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useFetch } from '@/adapters/query';
 import { useDisclosure } from '@/common/hooks';
 import { QUERY_KEYS } from '@/common/constants';
+import { formatErrorMessage } from '@/common/utils';
 import { fetchMyManual } from '@/common/services';
 import { useManualFileSelection, useUploadManual, usePreferences } from '@/modules/settings/hooks';
 import { SettingsConstants } from '@/modules/settings/constants/SettingsConstants.js';
@@ -35,7 +36,7 @@ export const useSettingsPageController = () => {
       selection.clear();
       setJustUploaded(true);
     } catch (error) {
-      setUploadError(error?.message ?? SettingsConstants.MESSAGES.UPLOAD_FALLBACK_ERROR);
+      setUploadError(formatErrorMessage(error, SettingsConstants.MESSAGES.UPLOAD_FALLBACK_ERROR));
     }
   };
 
