@@ -1,10 +1,10 @@
-# DigitalOcean App Platform spec. Replace OWNER/REPO and the API URL, then either let App Platform pick this
+# DigitalOcean App Platform spec. Replace temi-daramola/stylecheck-frontend and the API URL, then either let App Platform pick this
 # file up when you connect the repo or paste it under App > Settings > App Spec.
 name: stylecheck-frontend
 static_sites:
   - name: web
     github:
-      repo: OWNER/REPO
+      repo: temi-daramola/stylecheck-frontend
       branch: staging
       deploy_on_push: true
     build_command: npm ci && npm run build
