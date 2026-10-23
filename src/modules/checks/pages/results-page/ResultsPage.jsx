@@ -36,11 +36,13 @@ export const ResultsPage = () => {
               <Box flex="1" width="100%">
                 <Heading as="h2" fontSize="22px" fontWeight="700" color={COLORS.body.heading}>Overall Compliance Score</Heading>
                 <Text mt="1" mb="5" color={COLORS.body.muted}>
-                  {check.rulesFailed} {check.rulesFailed === 1 ? 'rule' : 'rules'} failed out of {check.totalRules} checks. Review the details below.
+                  {check.rulesFailed} {check.rulesFailed === 1 ? 'rule' : 'rules'} failed out of {check.rulesPassed + check.rulesFailed} checked.
+                  {check.rulesNotVerifiable > 0 && ` ${check.rulesNotVerifiable} could not be verified and are not counted.`} Review the details below.
                 </Text>
-                <SimpleGrid columns={3} gap="3">
+                <SimpleGrid columns={check.rulesNotVerifiable > 0 ? 4 : 3} gap="3">
                   <StatChip value={check.rulesPassed} label="Passed" color={COLORS.success.base} />
                   <StatChip value={check.rulesFailed} label="Failed" color={COLORS.error.base} />
+                  {check.rulesNotVerifiable > 0 && <StatChip value={check.rulesNotVerifiable} label="Not verified" color={COLORS.body.muted} />}
                   <StatChip value={check.totalRules} label="Total Rules" color={COLORS.body.heading} />
                 </SimpleGrid>
               </Box>

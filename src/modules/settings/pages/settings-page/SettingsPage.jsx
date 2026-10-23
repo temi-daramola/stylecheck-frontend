@@ -73,7 +73,7 @@ export const SettingsPage = () => {
                 {banner && <InlineAlert status="success" description={banner} />}
 
                 <Box>
-                  <Button tone="primary" size="lg" disabled={!canSubmit} loading={isUploading} loadingText="Saving and analysing..." onClick={submit}>
+                  <Button tone="primary" size="lg" disabled={!canSubmit} loading={isUploading} loadingText="Saving and reading every rule (about a minute)..." onClick={submit}>
                     {hasManual ? <RefreshIcon size={18} /> : <UploadIcon size={18} />}
                     {hasManual ? 'Replace Style Manual' : 'Upload Style Manual'}
                   </Button>

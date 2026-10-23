@@ -49,7 +49,11 @@ export const ManualFileCard = ({ manual, state, isRulesOpen, onToggleRules, onPr
               {manual.rules.map((rule) => (
                 <Box as="li" key={rule.ruleId} py="1" fontSize="14px" color={COLORS.body.base}>
                   <Text as="span" fontWeight="600">{rule.ruleName}</Text>
+                  {rule.sourceRef && <Text as="span" color={COLORS.body.muted}> [{rule.sourceRef.replace(/^\[|\]$/g, '')}]</Text>}
                   <Text as="span" color={COLORS.body.muted}>: {rule.description}</Text>
+                  {rule.verifiability === 'not-verifiable' && (
+                    <Text as="span" fontSize="12px" color={COLORS.warning.base}> (checked by hand, not by the app)</Text>
+                  )}
                 </Box>
               ))}
             </Box>
@@ -68,7 +72,7 @@ export const ManualFileCard = ({ manual, state, isRulesOpen, onToggleRules, onPr
                 : 'Checks stay locked until the style rules have been extracted from this file.'
             }
             action={
-              <Button tone="warning" onClick={onProcess} loading={isProcessing} loadingText="Processing...">
+              <Button tone="warning" onClick={onProcess} loading={isProcessing} loadingText="Reading every rule (about a minute)...">
                 <RefreshIcon size={16} /> Process now
               </Button>
             }
