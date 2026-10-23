@@ -1,0 +1,17 @@
+# DigitalOcean App Platform spec. Replace OWNER/REPO and the API URL, then either let App Platform pick this
+# file up when you connect the repo or paste it under App > Settings > App Spec.
+name: stylecheck-frontend
+static_sites:
+  - name: web
+    github:
+      repo: OWNER/REPO
+      branch: staging
+      deploy_on_push: true
+    build_command: npm ci && npm run build
+    output_dir: dist
+    # Single-page app: unknown paths (/login, /reset-password ...) must serve index.html instead of a 404.
+    catchall_document: index.html
+    envs:
+      - key: VITE_API_BASE_URL
+        scope: BUILD_TIME
+        value: https://YOUR-RENDER-SERVICE.onrender.com/api
