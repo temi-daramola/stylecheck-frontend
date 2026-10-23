@@ -14,4 +14,4 @@ static_sites:
     envs:
       - key: VITE_API_BASE_URL
         scope: BUILD_TIME
-        value: https://YOUR-RENDER-SERVICE.onrender.com/api
+        value: https://stylecheck-backend.onrender.com/api
